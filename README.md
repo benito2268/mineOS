@@ -1,1 +1,2 @@
 # mineOS
+humble beginnings
