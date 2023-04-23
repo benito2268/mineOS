@@ -40,18 +40,18 @@ void terminal_putentryat(unsigned char c, uint8_t color, size_t x, size_t y) {
 void terminal_putchar(char c) {
 	unsigned char uc = c;
 	if(uc == '\n') {
-		if(terminal_row++ == VGA_HEIGHT) {
+		terminal_column = 0;
+		if(++terminal_row == VGA_HEIGHT) {
 			terminal_scroll();
+			terminal_row = VGA_HEIGHT - 1;
 		}
-		terminal_column = 0;
-		return; //don't print the newline char
+	} else {
+		terminal_putentryat(uc, terminal_color, terminal_column, terminal_row);
+		if (++terminal_column == VGA_WIDTH) {
+			//figure this out later
+			terminal_column = 0;
+		}	
 	}
-	
-	terminal_putentryat(uc, terminal_color, terminal_column, terminal_row);
-	if (++terminal_column == VGA_WIDTH) {
-		//figure this out later
-		terminal_column = 0;
-	}	
 }
 
 void terminal_write(const char* data, size_t size) {
@@ -65,12 +65,10 @@ void terminal_writestring(const char* data) {
 
 void terminal_scroll(void) {
 	//move the contents of the buffer up
-	int i = VGA_HEIGHT-1 * VGA_WIDTH;
-	memmove(terminal_buffer, 
-			terminal_buffer+VGA_WIDTH, 
-			i * sizeof(uint16_t));
+	memmove(terminal_buffer, terminal_buffer + VGA_WIDTH, VGA_WIDTH*(VGA_HEIGHT-1)*sizeof(uint16_t));
 
-	for(size_t k = 0; k < VGA_WIDTH; ++k) {
-		terminal_buffer[i + k] = vga_entry(' ', terminal_color);
+	//clear the bottom line
+	for(size_t k = (VGA_HEIGHT-1)*VGA_WIDTH; k < VGA_HEIGHT*VGA_WIDTH; k++) {
+		terminal_buffer[k] = vga_entry(' ', terminal_color);
 	}
 }

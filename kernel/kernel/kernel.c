@@ -1,4 +1,6 @@
-#include <stdio.h>
+#include <stdio.h>  
+#include <string.h>
+#include <stdint.h>
 
 #include <kernel/tty.h>
 
@@ -35,8 +37,8 @@ void kernel_main(void) {
 	printf("Hello, kernel World!25\n");
 
 	printf("Hello, kernel World!26\n");
-	//printf("Hello, kernel World!27\n");
-	//printf("Hello, kernel World!28\n");
-	//printf("Hello, kernel World!29\n");
-	//printf("Hello, kernel World!30\n");
+	printf("Hello, kernel World!27\n");
+	printf("Hello, kernel World!28\n");
+	printf("Hello, kernel World!29\n");
+	printf("Hello, kernel World!30\n");
 }
