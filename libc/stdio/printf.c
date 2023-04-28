@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <stdlib.h>
+
 
 static bool print(const char* data, size_t length) {
 	const unsigned char* bytes = (const unsigned char*) data;
@@ -61,6 +63,20 @@ int printf(const char* restrict format, ...) {
 			}
 			if (!print(str, len))
 				return -1;
+			written += len;
+		} else if(*format == 'd') {
+			format++;
+			int num = va_arg(parameters, int);
+			char* str;
+			itoa(num, str, 10);
+			size_t len = strlen(str);
+			if(maxrem < len) {
+				errno = EOVERFLOW;
+				return -1;
+			}
+			if(!print(str, len)) {
+				return -1;
+			}
 			written += len;
 		} else {
 			format = format_begun_at;
