@@ -38,6 +38,12 @@ void regdump() {
         [a5] "=m" (esi), [a6] "=m" (edi), [a7] "=m" (esp), [a8] "=m" (ebp)
     );
 
-    printf("%x", ebx);
-    
+    printf("%s0x%x", "eax: ", eax);
+    printf("%s0x%x\n", " ebx: ", ebx);
+    printf("%s0x%x", "ecx: ", ecx);
+    printf("%s0x%x\n", " edx: ", edx);
+    printf("%s0x%x", "esi: ", esi);
+    printf("%s0x%x\n", " edi: ", edi);
+    printf("%s0x%x", "esp: ", esp);
+    printf("%s0x%x\n", " ebp: ", ebp);
 }

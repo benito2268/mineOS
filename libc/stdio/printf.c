@@ -78,6 +78,20 @@ int printf(const char* restrict format, ...) {
 				return -1;
 			}
 			written += len;
+		} else if(*format == 'x') {
+			format++;
+			int num = va_arg(parameters, int);
+			char* str;
+			itoa(num, str, 16);
+			size_t len = strlen(str);
+			if(maxrem < len) {
+				errno = EOVERFLOW;
+				return -1;
+			}
+			if(!print(str, len)) {
+				return -1;
+			}
+			written += len;
 		} else {
 			format = format_begun_at;
 			size_t len = strlen(format);

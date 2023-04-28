@@ -1,51 +1,57 @@
-#include <stdlib.h>
+// C program to implement itoa()
 #include <stdbool.h>
+#include <stdlib.h>
 
-//as in the standard itoa()
-//numbers not in base 10 are considered unsigned
-
-void reverse(char str[], int len) {
+// A utility function to reverse a string
+void reverse(char str[], int length)
+{
     int start = 0;
-    int end = len - 1;
-    while(start < end) {
-        char tmp = str[start];
+    int end = length - 1;
+    while (start < end) {
+        char temp = str[start];
         str[start] = str[end];
-        str[end] = tmp;
+        str[end] = temp;
         end--;
         start++;
     }
 }
-
-char* itoa(int val, char* str, int base) {
+// Implementation of citoa()
+char* itoa(int num, char* str, int base)
+{
     int i = 0;
-    bool is_neg = false;
-
-    //handle the zero case manually
-    if(val == 0) {
+    bool isNegative = false;
+ 
+    /* Handle 0 explicitly, otherwise empty string is
+     * printed for 0 */
+    if (num == 0) {
         str[i++] = '0';
         str[i] = '\0';
         return str;
     }
-
-    //check if signed or base 10
-    if(val < 0 && base == 10) {
-        is_neg = true;
-        val = -val;
+ 
+    // In standard itoa(), negative numbers are handled
+    // only with base 10. Otherwise numbers are
+    // considered unsigned.
+    if (num < 0 && base == 10) {
+        isNegative = true;
+        num = -num;
     }
-
-    while(val != 0) {
-        int rem = val % base;
+ 
+    // Process individual digits
+    while (num != 0) {
+        int rem = num % base;
         str[i++] = (rem > 9) ? (rem - 10) + 'a' : rem + '0';
-        val /= base;
+        num = num / base;
     }
-
-    if(is_neg) {
+ 
+    // If number is negative, append '-'
+    if (isNegative)
         str[i++] = '-';
-    }
-
-    str[i] = '\0';
-
+ 
+    str[i] = '\0'; // Append string terminator
+ 
+    // Reverse the string
     reverse(str, i);
-
+ 
     return str;
 }
